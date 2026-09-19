@@ -1,26 +1,142 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-heading: 'Helvetica Now Display Bold', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --color-text: #192837;
+  --color-brand: #4A1D96;
+  --color-login-bg: #F2F2EE;
+
+  /* shadcn/ui tokens, tuned to Opero: purple primary, lavender accents, warm neutrals */
+  --radius: 0.875rem;
+  --background: oklch(0.985 0.004 330);
+  --foreground: oklch(0.24 0.03 255);
+  --card: oklch(1 0 0 / 0.72);
+  --card-foreground: oklch(0.24 0.03 255);
+  --popover: oklch(0.995 0.003 330);
+  --popover-foreground: oklch(0.24 0.03 255);
+  --primary: oklch(0.36 0.17 295);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.96 0.012 320);
+  --secondary-foreground: oklch(0.3 0.04 280);
+  --muted: oklch(0.955 0.01 320);
+  --muted-foreground: oklch(0.52 0.02 280);
+  --accent: oklch(0.94 0.03 300);
+  --accent-foreground: oklch(0.32 0.12 295);
+  --destructive: oklch(0.58 0.2 25);
+  --border: oklch(0.2 0.03 280 / 0.1);
+  --input: oklch(0.2 0.03 280 / 0.12);
+  --ring: oklch(0.55 0.15 295 / 0.5);
 }
 
 @theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-cream: #f7f4ef;
+  --color-paper: #fffdfa;
+  --color-ink: #1d2b29;
+  --color-subtle: #66736f;
+  --color-line: #e6e0d6;
+  --color-teal: #2a9d8f;
+  --color-teal-soft: #dff2ee;
+  --color-peach: #f4b183;
+  --color-peach-soft: #fdeee2;
+  --color-rose: #c9594d;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-fraunces);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+.scene-bg {
+  background: radial-gradient(circle at 50% 35%, #ffffff 0%, #eef6f3 45%, #e3efeb 100%);
+}
+
+.scene-bg-night {
+  background: radial-gradient(circle at 50% 35%, #eef0fb 0%, #dfe3f5 50%, #cfd5ee 100%);
+}
+
+.jargon {
+  background: var(--color-peach-soft);
+  border-bottom: 2px solid var(--color-peach);
+  border-radius: 3px;
+  padding: 0 2px;
+  cursor: help;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.fade-up { animation: fade-up 0.45s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up { animation: none; }
+}
+
+.input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-cream);
+  padding: 0.55rem 0.8rem;
+  font-size: 0.875rem;
+  outline: none;
+}
+.input:focus { border-color: var(--color-teal); }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* Dashboard: shimmering "thinking" text */
+@keyframes shimmer-text {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+.shimmer-text {
+  background: linear-gradient(90deg, #a79aa6 0%, #3b2d4a 45%, #a79aa6 90%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer-text 2.2s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-text { animation: none; color: #6b5f73; background: none; }
 }

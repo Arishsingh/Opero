@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Opero
 
-## Getting Started
+Doctors write procedure notes the way they always do. Opero turns them into something the patient
+actually understands: a narrated 3D walkthrough, step-by-step pictures, and a plain-language report —
+in the patient's own language — sent to their phone in one click.
 
-First, run the development server:
+Live: https://opero-ochre.vercel.app
+
+## What it does
+
+- **Reads clinical shorthand.** "Pt 46F, lap chole under GA, NPO after midnight, RTC if fever >38.5C"
+  becomes calm, sixth-grade language.
+- **Explains the whole picture.** What's happening in the body, why this plan, what other options the
+  doctor mentioned, what happens step by step, and how to recover.
+- **Never graphic.** Visuals come from a fixed library of gentle 3D scenes, so blood, cuts and needles
+  can't appear. A second pass rewrites any graphic wording — except warning signs, which stay plain so
+  patients know when to get help.
+- **Answers questions.** A chatbot grounded strictly in the doctor's notes; when something isn't
+  covered it says so instead of guessing.
+- **Sends in one step.** WhatsApp (or SMS) with a single link to everything.
+
+## Stack
+
+Next.js (App Router) · Tailwind + shadcn/ui · Motion · react-three-fiber for the 3D scenes ·
+Gemini for the rewriting, Q&A and narration voice · MongoDB Atlas · deployed on Vercel.
+
+## Running it
 
 ```bash
+npm install
+cp .env.example .env.local   # add the keys below
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Variable | Needed for |
+| --- | --- |
+| `MONGODB_URI`, `MONGODB_DB`, `MONGODB_COLLECTION` | accounts, walkthroughs, cached narration |
+| `GEMINI_API_KEY` | rewriting the notes, the Q&A, and the narration voice |
+| `NEXT_PUBLIC_APP_URL` | the address used in links sent to patients |
+| `SESSION_SECRET` | signs the sign-in cookie |
+| `ELEVENLABS_API_KEY` | optional, replaces the Gemini narration voice |
+| `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | optional, sends SMS server-side |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Without a Gemini key the app falls back to a built-in sample walkthrough, so the demo still runs.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Layout
 
-## Learn More
+```
+src/app           routes: landing, sign-up, dashboard, patient page (/p), report (/r), API
+src/components    dashboard, 3D scene library, video player, gallery, report
+src/lib           Gemini prompts, safety filter, storage, sessions, voice
+tests             unit tests (npm test)
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Tests
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm test          # safety filter, grounded answers, API validation
+npx tsc --noEmit  # types
+npm run lint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Note
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Opero explains care in everyday words based on what the doctor wrote. It does not give medical advice,
+and it only ever says what is in the notes.

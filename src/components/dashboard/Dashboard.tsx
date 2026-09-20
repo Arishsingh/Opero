@@ -19,7 +19,6 @@ import {
   Copy,
   FileText,
   Globe,
-  Home,
   Images,
   Link2,
   LogOut,
@@ -227,7 +226,7 @@ function Sidebar({
     >
       <div className="mb-3 flex items-center gap-2.5 px-1.5 pt-1">
         <Link
-          href="/"
+          href="/dashboard"
           aria-label="Opero home"
           className="grid size-8 place-items-center rounded-lg bg-[#1E1433] text-white shadow"
         >
@@ -384,11 +383,6 @@ function Sidebar({
             <p className="truncate text-sm font-medium">{email}</p>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link href="/">
-              <Home /> Home
-            </Link>
-          </DropdownMenuItem>
           <DropdownMenuItem onSelect={onSignOut}>
             <LogOut /> Sign out
           </DropdownMenuItem>
